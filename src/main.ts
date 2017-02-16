@@ -17,7 +17,7 @@ window.onload = () => {
     shrimp.x = 200;
     shrimp.y = 200;
     shrimp.draw(context2D);
-    //this.addchild(te);
+    //object.addchild(te);
     //this.addchild(shrimp);
     //object.draw(context2D);
 };
@@ -40,7 +40,7 @@ class DisplayObjectContainer implements Drawable{
     canvasarray : DisplayObjectContainer[] = [];
 
     addchild(NewStage:DisplayObjectContainer){
-        this.canvasarray.push();
+        this.canvasarray.push(NewStage);
     }
 
     draw(context:CanvasRenderingContext2D){
