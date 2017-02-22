@@ -7,7 +7,7 @@ window.onload = function () {
     var canvas = document.getElementById("myCanvas");
     var context2D = canvas.getContext("2d");
     var stage = new DisplayObjectContainer();
-    context2D.globalAlpha = 0.5;
+    context2D.globalAlpha = 1;
     context2D.setTransform(1, 0, 0, 1, 50, 50);
     setInterval(function () {
         context2D.clearRect(0, 0, canvas.width, canvas.height);
@@ -17,21 +17,41 @@ window.onload = function () {
     text.text = "Here we go!";
     text.x = 10;
     text.y = 10;
-    //text.alpha = 1;
+    text.alpha = 0.5;
     var shrimp = new Bitmap();
-    shrimp.img.src = "shrimp.jpeg";
+    shrimp.img.src = "chicken.jpeg";
     shrimp.x = 120;
     shrimp.y = 120;
+    shrimp.transform(120, 120);
     //shrimp.alpha = 0.5;
     stage.addChild(text);
     stage.addChild(shrimp);
+    /*
+        var chicken = new Bitmap();
+        chicken.img.src = "chicken.jpeg";
+        chicken.x = 200;
+        chicken.y = 200;
+        chicken.alpha = 0.5;
+        stage.addChild(text);
+        stage.addChild(chicken);
+    */
 };
 var DisplayObject = (function () {
     function DisplayObject() {
         this.x = 0;
+        this.y = 0;
         this.alpha = 1;
     }
+    /*constructor(x:number,y:number){
+        this.x = x;
+        this.y = y;
+        //this.tansMatrix = math.matrixAppendMatrix(1,1,1,1,1,1);
+    }*/
     DisplayObject.prototype.draw = function (context) {
+    };
+    DisplayObject.prototype.transform = function (x, y) {
+        this.tansMatrix[0][2] += x;
+        this.tansMatrix[1][2] += y;
     };
     return DisplayObject;
 }());
@@ -51,6 +71,11 @@ var DisplayObjectContainer = (function (_super) {
         for (var _i = 0, _a = this.canvasarray; _i < _a.length; _i++) {
             var stage = _a[_i];
             stage.draw(context);
+        }
+    };
+    DisplayObjectContainer.prototype.getContext = function () {
+        if (this.context) {
+            return this.context;
         }
     };
     return DisplayObjectContainer;
