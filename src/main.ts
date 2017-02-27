@@ -3,7 +3,7 @@ window.onload = () => {
     var context2D = canvas.getContext("2d");
    
     var image = new Image ();
-    image.src = "shrimp.jpeg";
+    image.src = "chicken.jpeg";
     image.onload = () => {
         var stage = new DisplayObjectContainer();
          stage.x = 500;
@@ -11,15 +11,15 @@ window.onload = () => {
         setInterval(()=>{
             context2D.clearRect(0,0,canvas.width,canvas.height);
             stage.draw(context2D);
-        },100);
-   
+        },1000);
+   stage.alpha = 0.5;
 
     var text = new TextField();
-    text.text = "AHA we go!";
+    text.text = "Headache!!!!!";
     text.x = 100;
     text.y = 90;
-    text.alpha = 0.5;
-    
+    text.alpha = 1;
+
     var shrimp = new Bitmap();
     shrimp.imgage = image;
     shrimp.x = 100;
@@ -39,9 +39,32 @@ class DisplayObject implements Drawable{
     x = 0;
     y = 0;
     alpha = 1;
+    globalAlpha = 1;
+    parent:DisplayObjectContainer;
     tansMatrix : number[][];
 
     draw(context:CanvasRenderingContext2D){
+        if(this.parent){
+            //有父亲，那么globalAlpha就等于自己的alpha乘以父亲的globalAlpha
+            this.globalAlpha = this.alpha * this.parent.globalAlpha;
+            //console.log(this.globalAlpha);
+            //console.log(this.parent.globalAlpha);
+            //console.log(this.parent.alpha);
+        }
+        else{
+            //舞台没有父亲，让自己的alpha等于gloabalAlpha
+            this.globalAlpha = this.alpha;
+            //console.log(this.globalAlpha);
+            //console.log(this.alpha);
+            //console.log(this.parent.globalAlpha);
+            //console.log(this.parent.alpha);
+        }
+       
+        context.globalAlpha = this.globalAlpha;
+        this.render(context);
+    }
+
+    render(context:CanvasRenderingContext2D){
 
     }
 
@@ -51,17 +74,18 @@ class DisplayObject implements Drawable{
     }
 }
 
-class DisplayObjectContainer implements Drawable{
+class DisplayObjectContainer extends DisplayObject{
 
     x : number = 0;
     y : number = 0;
     canvasarray : Drawable[] = [];
 
-    addchild(newContext:Drawable){
-        this.canvasarray.push(newContext);
+    addchild(child:DisplayObject){
+        this.canvasarray.push(child);
+        child.parent = this;
     }
 
-    draw(context:CanvasRenderingContext2D){
+    render(context:CanvasRenderingContext2D){
         for(let drawable of this.canvasarray){
             drawable.draw(context);
         }
@@ -73,8 +97,8 @@ class TextField extends DisplayObject{
     text:string;
     x:number = 0;
     y:number = 0;
-    draw(context:CanvasRenderingContext2D){
-        context.globalAlpha = this.alpha;
+    render(context:CanvasRenderingContext2D){
+        //context.globalAlpha = this.alpha;
         context.fillText(this.text,this.x,this.y,100);
     }
 
@@ -83,8 +107,8 @@ class TextField extends DisplayObject{
 class Bitmap extends DisplayObject{
     imgage:HTMLImageElement;
 
-    draw(context:CanvasRenderingContext2D){
-        context.globalAlpha = this.alpha;
+    render(context:CanvasRenderingContext2D){
+        //context.globalAlpha = this.alpha;
         context.drawImage(this.imgage,this.x,this.y);
     }
 }
