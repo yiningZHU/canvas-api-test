@@ -47,17 +47,10 @@ class DisplayObject implements Drawable{
         if(this.parent){
             //有父亲，那么globalAlpha就等于自己的alpha乘以父亲的globalAlpha
             this.globalAlpha = this.alpha * this.parent.globalAlpha;
-            //console.log(this.globalAlpha);
-            //console.log(this.parent.globalAlpha);
-            //console.log(this.parent.alpha);
         }
         else{
             //舞台没有父亲，让自己的alpha等于gloabalAlpha
             this.globalAlpha = this.alpha;
-            //console.log(this.globalAlpha);
-            //console.log(this.alpha);
-            //console.log(this.parent.globalAlpha);
-            //console.log(this.parent.alpha);
         }
        
         context.globalAlpha = this.globalAlpha;
@@ -71,6 +64,10 @@ class DisplayObject implements Drawable{
     transform(x:number,y:number){
         this.tansMatrix[0][2]+=x;
         this.tansMatrix[1][2]+=y; 
+    }
+
+    hitTest(){
+        
     }
 }
 
