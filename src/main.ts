@@ -97,8 +97,7 @@ class DisplayObject implements Drawable {
 
     }
 
-    hitTest() {
-
+    hitTest(x:number,y:number) {
     }
 }
 

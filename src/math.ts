@@ -110,4 +110,23 @@ module math {
 
         }
     }
+
+    export class Rectangle{
+        x = 0;
+        y = 0;
+        width = 1;
+        height = 1;
+        isPointInRectangle(point:Point){
+            let rect = this;
+            if(point.x<rect.width + rect.x &&
+               point.y<rect.height + rect.y &&
+               point.x>rect.x &&
+               point.y>rect.y){
+                   return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
 }
